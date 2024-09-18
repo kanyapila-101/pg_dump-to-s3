@@ -43,7 +43,7 @@ for db in "${DBS[@]}"; do
     echo "   -> backing up $db..."
 
     # Dump database
-    pg_dump -Fc -h $PG_HOST -U $PG_USER -W $PG_PASS -p $PG_PORT $db > /tmp/"$FILENAME".sql
+    pg_dump -Fc -h $PG_HOST -U $PG_USER -W $PG_PASS -p $PG_PORT $db --no-owner > /tmp/"$FILENAME".sql
 
     # Copy to S3
     aws s3 cp /tmp/"$FILENAME".sql s3://$S3_PATH/"$FILENAME".sql --storage-class STANDARD_IA

@@ -35,7 +35,7 @@ if [ "$DB_EXISTS" = "1" ]
 then
     echo "Database $1 already exists, skipping creation"
     # Restore database
-    pg_restore -h $PG_HOST -U $PG_USER -p $PG_PORT -d $1 -Fc --clean /tmp/$2
+    pg_restore -h $PG_HOST -U $PG_USER -p $PG_PORT -d $1 -Fc --clean --no-owner /tmp/$2
 else
     echo "Creating database $1"
     createdb -h $PG_HOST -p $PG_PORT -U $PG_USER -T template0 $1
