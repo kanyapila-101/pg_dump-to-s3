@@ -26,12 +26,13 @@ if [[ -z "$@" ]]; then
     exit 0
 fi
 
-echo " * Restore in progress 1 ${$1}";
-echo " * Restore in progress 2 ${$2}";
+# echo " * Restore in progress 1 ${$1}";
+# echo " * Restore in progress 2 ${$2}";
 
 # Download backup from s3
-aws s3 cp s3://$S3_PATH/$2 /tmp/$2
-
+# aws s3 cp s3://$S3_PATH/$2 /tmp/$2
+aws s3 cp s3://tst-backups-pg-sql/nonprod-pg-sql/2024-09-18-at-08-19-22_TMS-Staging.sql /tmp/2024-09-18-at-08-19-22_TMS-Staging.sql
+# s3://tst-backups-pg-sql/nonprod-pg-sql/2024-09-18-at-08-19-22_TMS-Staging.sql
 # Create database if not exists
 DB_EXISTS=$(psql -h $PG_HOST -p $PG_PORT -U $PG_USER -d postgres -tAc "SELECT 1 FROM pg_database WHERE datname='$1'")
 if [ "$DB_EXISTS" = "1" ]
