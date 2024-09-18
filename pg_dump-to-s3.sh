@@ -9,11 +9,12 @@
 #
 # Project at https://github.com/gabfl/pg_dump-to-s3
 #
-
+echo " * Backup in progress.,.${HOME}";
 set -e
 
 # Set current directory
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+echo " * Backup in progress.,.${DIR}";
 
 # Import config file
 if [ -f "${HOME}/.pg_dump-to-s3.conf" ]; then
@@ -24,7 +25,9 @@ fi
 
 # Vars
 NOW=$(date +"%Y-%m-%d-at-%H-%M-%S")
-DELETETION_TIMESTAMP=`[ "$(uname)" = Linux ] && date +%s --date="-$DELETE_AFTER"` # Maximum date (will delete all files older than this date)
+echo " * Backup in progress.,.${NOW}";
+
+# DELETETION_TIMESTAMP=`[ "$(uname)" = Linux ] && date +%s --date="-$DELETE_AFTER"` # Maximum date (will delete all files older than this date)
 
 # Split databases
 IFS=',' read -ra DBS <<< "$PG_DATABASES"
@@ -40,7 +43,7 @@ for db in "${DBS[@]}"; do
     echo "   -> backing up $db..."
 
     # Dump database
-    pg_dump -Fc -h $PG_HOST -U $PG_USER -p $PG_PORT $db > /tmp/"$FILENAME".dump
+    pg_dump -Fc -h $PG_HOST -U $PG_USER -W $PG_PASS -p $PG_PORT $db > /tmp/"$FILENAME".dump
 
     # Copy to S3
     aws s3 cp /tmp/"$FILENAME".dump s3://$S3_PATH/"$FILENAME".dump --storage-class STANDARD_IA
