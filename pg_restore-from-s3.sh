@@ -18,13 +18,16 @@ USAGE:
   $(basename $0) [db target] [s3 object]
 
 EXAMPLE
-  $(basename $0) service 2023-06-28-at-10-29-44_service.dump
+  $(basename $0) service 2024-09-18-at-08-19-22_TMS-Staging.sql
 "
 
 if [[ -z "$@" ]]; then
     echo "$__usage"
     exit 0
 fi
+
+echo " * Restore in progress 1 ${$1}";
+echo " * Restore in progress 2 ${$2}";
 
 # Download backup from s3
 aws s3 cp s3://$S3_PATH/$2 /tmp/$2
